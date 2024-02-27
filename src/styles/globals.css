@@ -1,0 +1,203 @@
+:root {
+   --max-width: 1100px;
+   --border-radius: 12px;
+   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+      'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+      'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace, 'Metropolis';
+
+   --foreground-rgb: 0, 0, 0;
+   --background-start-rgb: 214, 219, 220;
+   --background-end-rgb: 255, 255, 255;
+
+   --primary-glow: conic-gradient(from 180deg at 50% 50%,
+         #16abff33 0deg,
+         #0885ff33 55deg,
+         #54d6ff33 120deg,
+         #0071ff33 160deg,
+         transparent 360deg);
+   --secondary-glow: radial-gradient(rgba(255, 255, 255, 1),
+         rgba(255, 255, 255, 0));
+
+   --tile-start-rgb: 239, 245, 249;
+   --tile-end-rgb: 228, 232, 233;
+   --tile-border: conic-gradient(#00000080,
+         #00000040,
+         #00000030,
+         #00000020,
+         #00000010,
+         #00000010,
+         #00000080);
+
+   --callout-rgb: 238, 240, 241;
+   --callout-border-rgb: 172, 175, 176;
+   --card-rgb: 180, 185, 188;
+   --card-border-rgb: 131, 134, 135;
+}
+
+@media (prefers-color-scheme: dark) {
+   :root {
+      --foreground-rgb: 50, 70, 77;
+      --background-start-rgb: 0, 0, 0;
+      --background-end-rgb: 0, 0, 0;
+
+      --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
+      --secondary-glow: linear-gradient(to bottom right,
+            rgba(1, 65, 255, 0),
+            rgba(1, 65, 255, 0),
+            rgba(1, 65, 255, 0.3));
+
+      --tile-start-rgb: 2, 13, 46;
+      --tile-end-rgb: 2, 5, 19;
+      --tile-border: conic-gradient(#ffffff80,
+            #ffffff40,
+            #ffffff30,
+            #ffffff20,
+            #ffffff10,
+            #ffffff10,
+            #ffffff80);
+
+      --callout-rgb: 20, 20, 20;
+      --callout-border-rgb: 108, 108, 108;
+      --card-rgb: 100, 100, 100;
+      --card-border-rgb: 200, 200, 200;
+   }
+}
+
+* {
+   box-sizing: border-box;
+   padding: 0;
+   margin: 0;
+}
+
+html,
+body {
+   max-width: 100vw;
+   overflow-x: hidden;
+}
+
+body {
+   color: rgb(var(--foreground-rgb));
+   background: linear-gradient(to bottom,
+         transparent,
+         rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+a {
+   color: inherit;
+   text-decoration: none;
+}
+
+input::placeholder {
+   color: #aaa;
+}
+
+@media (prefers-color-scheme: dark) {
+   /* html {
+      color-scheme: dark;
+   } */
+}
+
+@font-face {
+   font-family: 'MetropolisRegular';
+   src: url('../../assets/fonts/metropolis.regular.otf');
+   font-weight: 200;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisBold';
+   src: url('../../assets/fonts/metropolis.bold.otf');
+   font-weight: 700;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisExtraBold';
+   src: url('../../assets/fonts/metropolis.extra-bold.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisExtraLight';
+   src: url('../../assets/fonts/metropolis.extra-light.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisSemiBold';
+   src: url('../../assets/fonts/metropolis.semi-bold.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisLight';
+   src: url('../../assets/fonts/metropolis.light.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisMedium';
+   src: url('../../assets/fonts/metropolis.medium.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisBlack';
+   src: url('../../assets/fonts/metropolis.black.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+@font-face {
+   font-family: 'MetropolisThin';
+   src: url('../../assets/fonts/metropolis.thin.otf');
+   font-weight: 100;
+   font-style: normal;
+}
+
+.PhoneInputCountryIcon {
+   height: auto;
+   color: currentColor;
+   /* Ajuste o tamanho do ícone do país conforme necessário */
+   width: 20px;
+   background: none;
+   border: none;
+   box-sizing: none;
+   -webkit-tap-highlight-color: transparent;
+
+}
+
+.PhoneInputInput {
+   font: MetropolisRegular;
+   letter-spacing: inherit;
+   color: currentColor;
+   font-size: 15px;
+   /* padding: 4px 0 5px; */
+   border: 0;
+   box-sizing: content-box;
+   background: none;
+   height: 1.35em;
+   margin: 0;
+   -webkit-tap-highlight-color: transparent;
+   display: block;
+   min-width: 0;
+   width: 100%;
+   -webkit-animation-name: mui-auto-fill-cancel;
+   animation-name: mui-auto-fill-cancel;
+   -webkit-animation-duration: 10ms;
+   animation-duration: 10ms;
+   padding: 16.5px 8px;
+
+   /* Ajuste o espaçamento à esquerda conforme necessário */
+}
+
+.PhoneInputInput--focus {
+   border: 1px solid #1976d2;
+   box-shadow: 0 0 0 1px #1976d2;
+}
+  
