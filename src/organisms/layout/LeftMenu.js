@@ -25,6 +25,7 @@ export const LeftMenu = ({ }) => {
    const [showMenuMobile, setShowMenuMobile] = useState(false)
    const [showDialogEditUser, setShowDialogEditUser] = useState(false)
    const [showMenuHelp, setShowMenuHelp] = useState(false)
+   const [showEditUser, setShowEditUser] = useState(false)
    const [groupStates, setGroupStates] = useState(menuItems.map(() => false));
 
 
@@ -70,7 +71,8 @@ export const LeftMenu = ({ }) => {
                   />
                </Box>
                <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-
+                  <Text bold style={{ color: '#fff' }}>Medição conciente</Text>
+                  {/* 
                   <Box sx={{
                      ...styles.icon,
                      backgroundImage: `url('/icons/logo-clinica-light.png')`,
@@ -81,7 +83,7 @@ export const LeftMenu = ({ }) => {
                      "&:hover": {
                         cursor: 'pointer', opacity: 0.8
                      }
-                  }} onClick={() => router.push('/')} />
+                  }} onClick={() => router.push('/')} /> */}
                   <Box onClick={() => setShowVersion(true)} sx={{ cursor: 'pointer' }}>
                      <Text style={{ bottom: 45, left: 10, position: 'absolute', color: 'gray' }}> v{latestVersion?.version}</Text>
                   </Box>
@@ -91,102 +93,100 @@ export const LeftMenu = ({ }) => {
                <Divider distance={4} color={'rgb(255 255 255 / 0.1)'} />
                <Box sx={{ ...styles.boxMenu, ...(showMenuMobile && { overflowY: 'auto' }), ...(!showMenuHelp && { width: 40, marginLeft: 1, gap: 2 }) }}>
                   {menuItems.map((group, index) => {
-                     const userProfiles = user?.perfil?.split(',').map(profile => profile.trim()) || [];
-                     const visibleItems = group.permissions?.filter(item =>
-                        userProfiles.some(profile => item.includes(profile))
-                     );
-                     if (visibleItems && visibleItems?.length > 0) {
-                        return (
-                           <Box key={`${group}-${index}`} sx={{ display: 'flex', flexDirection: 'column', gap: 0.3, color: '#f0f0f0' + '77' }}
-                              onMouseEnter={() => (!showMenuMobile && !showMenuHelp) && handleGroupMouseEnter(index)}
-                              onMouseLeave={() => (!showMenuMobile && !showMenuHelp) && handleGroupMouseLeave(index)}
-                              onClick={() => {
-                                 router.push(`/${group.to}`);
-                                 setShowMenuHelp(false)
+                     const pathRouteName = router?.asPath?.split('/')[1]
+                     const toRoute = group?.to?.split('/')[1]
+                     const currentPage = pathRouteName === toRoute;
+                     const route = group?.queryId ? `${group?.to}/${user?._id}` : group?.to
+                     return (
+                        <Box key={`${group}-${index}`} sx={{ display: 'flex', flexDirection: 'column', gap: 0.3, color: '#f0f0f0' + '77' }}
+                           onMouseEnter={() => (!showMenuMobile && !showMenuHelp) && handleGroupMouseEnter(index)}
+                           onMouseLeave={() => (!showMenuMobile && !showMenuHelp) && handleGroupMouseLeave(index)}
+                           onClick={() => {
+                              router.push(route);
+                              setShowMenuHelp(false)
 
-                              }}>
-                              {(pathname === group.to) && <Box sx={{ display: 'flex', height: '30px', width: 4, borderRadius: '0px 5px 5px 0px', backgroundColor: colorPalette?.buttonColor, position: 'absolute', left: 0 }} />}
+                           }}>
+                           {currentPage && <Box sx={{ display: 'flex', height: '30px', width: 4, borderRadius: '0px 5px 5px 0px', backgroundColor: colorPalette?.buttonColor, position: 'absolute', left: 0 }} />}
 
-                              {/* {index !== 0 && <Box sx={{ width: '100%', height: `1px`, backgroundColor: '#e4e4e4', margin: `16px 0px`, }} />} */}
-                              <Box sx={{
-                                 display: showMenuHelp ? 'flex' : 'none',
-                                 transition: '.7s',
-                                 alignItems: 'center',
-                                 justifyContent: 'space-between',
-                                 gap: 0.5,
-                                 padding: `5px 8px`,
-                                 width: '100%',
-                                 borderRadius: 2,
+                           {/* {index !== 0 && <Box sx={{ width: '100%', height: `1px`, backgroundColor: '#e4e4e4', margin: `16px 0px`, }} />} */}
+                           <Box sx={{
+                              display: showMenuHelp ? 'flex' : 'none',
+                              transition: '.7s',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: 0.5,
+                              padding: `5px 8px`,
+                              width: '100%',
+                              borderRadius: 2,
+                              opacity: 0.8,
+                              "&:hover": {
                                  opacity: 0.8,
-                                 "&:hover": {
-                                    opacity: 0.8,
-                                    cursor: 'pointer',
-                                    backgroundColor: '#f0f0f0' + '22'
-                                 }
-                              }} >
-                                 <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1.5, position: 'relative', alignItems: 'center', position: 'relative' }}>
-                                    <Box sx={{ ...styles.icon, backgroundImage: `url(${group?.icon})`, width: group.text === 'Administrativo' ? 15 : 18, height: group.text === 'Administrativo' ? 24 : 18, filter: 'brightness(0) invert(1)', transition: 'background-color 1s' }} />
-                                    {<Text bold style={{ color: (pathname === group.to) ? colorPalette?.buttonColor : '#fff', transition: 'background-color 1s', }}>
-                                       {group?.text}
-                                    </Text>}
-                                 </Box>
-                              </Box>
-
-                              <Box sx={{
-                                 display: showMenuHelp ? 'none' : 'flex',
-                                 alignItems: 'center',
-                                 transition: '.7s',
-                                 justifyContent: 'center',
-                                 width: 30,
-                                 height: '100%',
-                                 padding: '5px 0px',
-                                 gap: 1.5,
-                                 borderRadius: 2,
-                                 opacity: 0.8,
-                                 "&:hover": {
-                                    opacity: 0.8,
-                                    cursor: 'pointer',
-                                    backgroundColor: '#f0f0f0' + '22'
-                                 }
-                              }} >
-                                 <Box sx={{ ...styles.icon, backgroundImage: `url(${group?.icon})`, width: group.text === 'Administrativo' ? 15 : 18, height: group.text === 'Administrativo' ? 24 : 18, filter: 'brightness(0) invert(1)', transition: 'background-color 1s' }} />
-                              </Box>
-
-                              {!showMenuMobile ?
-                                 <Box sx={{
-                                    display: 'flex', flexDirection: 'column',
-                                    padding: '8px', ...(!showMenuHelp && {
-                                       position: 'absolute',
-                                       marginLeft: 4, padding: '8px',
-                                    }
-                                    )
-                                 }}>
-                                    <Box sx={{
-                                       flex: 1, backgroundColor: showMenuHelp ? colorPalette.third : '#fff', display: 'flex', marginLeft: 2, flexDirection: 'column',
-                                    }}>
-                                       {groupStates[index] && (
-                                          <>
-                                             {!showMenuHelp &&
-                                                <>
-                                                   <Box sx={{
-                                                      display: 'flex', alignItems: 'start', justifyContent: 'flex-start', padding: '10px 15px',
-                                                      flexDirection: 'column'
-                                                   }}>
-                                                      <Text bold>{group.text}</Text>
-                                                   </Box>
-                                                </>
-                                             }
-                                          </>
-                                       )}
-                                    </Box>
-                                 </Box>
-                                 : <>
-                                 </>
+                                 cursor: 'pointer',
+                                 backgroundColor: '#f0f0f0' + '22'
                               }
-
+                           }} >
+                              <Box sx={{ display: 'flex', justifyContent: 'flex-start', gap: 1.5, position: 'relative', alignItems: 'center', position: 'relative' }}>
+                                 <Box sx={{ ...styles.icon, backgroundImage: `url(${group?.icon})`, width: group.text === 'Administrativo' ? 15 : 18, height: group.text === 'Administrativo' ? 24 : 18, filter: 'brightness(0) invert(1)', transition: 'background-color 1s' }} />
+                                 {<Text bold style={{ color: currentPage ? colorPalette?.buttonColor : '#fff', transition: 'background-color 1s', }}>
+                                    {group?.text}
+                                 </Text>}
+                              </Box>
                            </Box>
-                        )
-                     }
+
+                           <Box sx={{
+                              display: showMenuHelp ? 'none' : 'flex',
+                              alignItems: 'center',
+                              transition: '.7s',
+                              justifyContent: 'center',
+                              width: 30,
+                              height: '100%',
+                              padding: '5px 0px',
+                              gap: 1.5,
+                              borderRadius: 2,
+                              opacity: 0.8,
+                              "&:hover": {
+                                 opacity: 0.8,
+                                 cursor: 'pointer',
+                                 backgroundColor: '#f0f0f0' + '22'
+                              }
+                           }} >
+                              <Box sx={{ ...styles.icon, backgroundImage: `url(${group?.icon})`, width: group.text === 'Administrativo' ? 15 : 18, height: group.text === 'Administrativo' ? 24 : 18, filter: 'brightness(0) invert(1)', transition: 'background-color 1s' }} />
+                           </Box>
+
+                           {!showMenuMobile ?
+                              <Box sx={{
+                                 display: 'flex', flexDirection: 'column',
+                                 padding: '8px', ...(!showMenuHelp && {
+                                    position: 'absolute',
+                                    marginLeft: 4, padding: '8px',
+                                 }
+                                 )
+                              }}>
+                                 <Box sx={{
+                                    flex: 1, backgroundColor: showMenuHelp ? colorPalette.third : '#fff', display: 'flex', marginLeft: 2, flexDirection: 'column',
+                                 }}>
+                                    {groupStates[index] && (
+                                       <>
+                                          {!showMenuHelp &&
+                                             <>
+                                                <Box sx={{
+                                                   display: 'flex', alignItems: 'start', justifyContent: 'flex-start', padding: '10px 15px',
+                                                   flexDirection: 'column'
+                                                }}>
+                                                   <Text bold>{group.text}</Text>
+                                                </Box>
+                                             </>
+                                          }
+                                       </>
+                                    )}
+                                 </Box>
+                              </Box>
+                              : <>
+                              </>
+                           }
+
+                        </Box>
+                     )
                   })}
                </Box>
 
@@ -239,8 +239,12 @@ export const LeftMenu = ({ }) => {
          }
 
          <Box sx={{
-            position: 'absolute', top: 15, right: 15, gap: .5, flexDirection: 'column',
-            display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' }, alignItems: 'center',
+            position: 'absolute',
+            top: { xs: 15, xm: 15, md: 15, lg: 15 },
+            right: { xs: 15, xm: 15, md: 40, lg: 40 },
+            gap: .5,
+            flexDirection: 'column',
+            display: 'flex', alignItems: 'center',
             "&:hover": {
                cursor: 'pointer', opacity: 0.8
             }

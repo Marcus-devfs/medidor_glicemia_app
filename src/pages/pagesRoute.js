@@ -48,11 +48,10 @@ const styles = {
         display: "flex",
         minHeight: "100vh",
         flexDirection: "row",
-        width: '100%',
+        width: '100%'
     },
     contentContainer: {
         display: "flex",
-        width: '100%',
         flexDirection: 'column',
         flex: 1,
         gap: `35px`,
