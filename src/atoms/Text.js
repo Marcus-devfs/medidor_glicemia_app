@@ -36,7 +36,7 @@ export const Text = (props) => {
          ...(small && { fontSize: { xs: `10px`, sm: `10px`, md: `10px`, lg: `11px`, xl: `12px` } }),
          ...(large && { fontSize: { xs: `14px`, sm: `14px`, md: `14px`, lg: `14px`, xl: `18px` } }),
          ...(veryLarge && { fontSize: { xs: `22px`, sm: `18px`, md: `18px`, lg: `20px`, xl: `27px` } }),
-         ...(indicator && { fontSize: { xs: `22px`, sm: `25px`, md: `25px`, lg: `28px`, xl: `30px` } }),
+         ...(indicator && { fontSize: { xs: `30px`, sm: `25px`, md: `25px`, lg: `28px`, xl: `30px` } }),
          ...(title && { fontSize: { xs: `18px`, sm: `18px`, md: `18px`, lg: `18px`, xl: `22px` } }),
          ...(center && { textAlign: 'center' }),
          ...(secundary && { color: Colors.textColor + '77' }),

@@ -9,8 +9,8 @@ export const LoadingIcon = (props) => {
     return (
         <>
             <Box sx={styles.backdrop}>
-                <Box sx={styles.favicon} />
-                <Text bold sx={{color: '#fff'}}>Carregando...</Text>
+                {/* <Box sx={styles.favicon} /> */}
+                <Text bold large sx={{color: '#fff'}}>Carregando...</Text>
             </Box>
         </>
     )

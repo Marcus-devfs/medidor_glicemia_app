@@ -86,6 +86,8 @@ export const LeftMenu = ({ }) => {
                      <Text style={{ bottom: 45, left: 10, position: 'absolute', color: 'gray' }}> v{latestVersion?.version}</Text>
                   </Box>
                </Box>
+
+
                <Divider distance={4} color={'rgb(255 255 255 / 0.1)'} />
                <Box sx={{ ...styles.boxMenu, ...(showMenuMobile && { overflowY: 'auto' }), ...(!showMenuHelp && { width: 40, marginLeft: 1, gap: 2 }) }}>
                   {menuItems.map((group, index) => {
@@ -219,7 +221,7 @@ export const LeftMenu = ({ }) => {
                                  cursor: 'pointer', opacity: 0.8
                               }
                            }} />
-                           <Text style={{color: '#fff', opacity: currentPage ? 1 : .5,}} bold={currentPage} xsmall>{item?.text}</Text>
+                           <Text style={{ color: '#fff', opacity: currentPage ? 1 : .5, }} bold={currentPage} xsmall>{item?.text}</Text>
                         </Box>
                      </Box>
                   )
@@ -236,6 +238,22 @@ export const LeftMenu = ({ }) => {
             )
          }
 
+         <Box sx={{
+            position: 'absolute', top: 15, right: 15, gap: .5, flexDirection: 'column',
+            display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' }, alignItems: 'center',
+            "&:hover": {
+               cursor: 'pointer', opacity: 0.8
+            }
+         }} onClick={logout}>
+            <Box sx={{
+               ...styles.icon,
+               backgroundImage: `url('/icons/exit.png')`,
+               backgroundSize: 'contain',
+               width: 20,
+               height: 20,
+            }} />
+            <Text small light>Sair</Text>
+         </Box >
          {/* <Backdrop open={showVersion || user?.at_versao > 0} sx={{ zIndex: 999 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400 }}>
                <ContentContainer>
