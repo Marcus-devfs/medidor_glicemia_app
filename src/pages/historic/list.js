@@ -19,11 +19,11 @@ import { saveAs } from 'file-saver'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const groupPeriod = [
-    { label: 'Jejum', value: 'Jejum' },
-    { label: 'Após Café', value: 'Após Café' },
-    { label: 'Após Almoço', value: 'Após Almoço' },
-    { label: 'Após Jantar', value: 'Após Jantar' },
+const groupRows = [
+    { label: '10', value: 10 },
+    { label: '15', value: 15 },
+    { label: '25', value: 25 },
+    { label: '50', value: 50 },
 ]
 
 const grouDiet = [
@@ -37,6 +37,7 @@ export default function HistoricMarkings() {
     const [menu, setMenu] = useState(menuItems)
     const [markings, setMarkings] = useState([])
     const [showMarking, setShowMarking] = useState(false)
+    const [showEditMarking, setShowEditMarking] = useState({ active: false, item: {} })
     const router = useRouter();
     moment.locale("pt-br");
     const localizer = momentLocalizer(moment);
@@ -45,17 +46,14 @@ export default function HistoricMarkings() {
         startDate: '',
         endDate: ''
     })
-
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
     const filterFunctions = {
         date: (item) => (filters?.startDate !== '' && filters?.endDate !== '') ? rangeDate(item.date, filters?.startDate, filters?.endDate) : item,
         search: (item) => {
             const normalizedSearchTerm = removeAccents(filters?.search?.toLowerCase());
             const normalizedPeriod = removeAccents(item.period?.toLowerCase()) || '';
             const normalizedFood = removeAccents(item.food?.toLowerCase()) || '';
-
-            console.log(normalizedPeriod);
-            console.log(normalizedFood);
-            console.log(normalizedSearchTerm);
 
             return (
                 filters?.search === '' ||
@@ -86,7 +84,7 @@ export default function HistoricMarkings() {
     const getMarkings = async () => {
         setLoading(true)
         try {
-            const response = await api.get(`/marking/list/${user?._id}`)
+            const response = await api.get(`/marking/list/${user?._id}?page=${page}&limit=${limit}`)
             setMarkings(response?.data)
         } catch (error) {
             alert.error('Ocorreu um erro ao listar medições.');
@@ -117,7 +115,7 @@ export default function HistoricMarkings() {
 
     useEffect(() => {
         getMarkings()
-    }, [])
+    }, [page, limit]);
 
 
     const sortedHistoric = markings?.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -154,6 +152,51 @@ export default function HistoricMarkings() {
         });
         saveAs(blob, "marcacoes_glicemia.xlsx");
     };
+
+
+    const handleChange = (value) => {
+
+        setShowEditMarking((prevValues) => ({
+            ...prevValues,
+            item: {
+                ...prevValues.item,
+                [value.target.name]: value.target.value,
+            }
+        }))
+    }
+
+
+
+    const handleEditMarking = async (id) => {
+        setLoading(true)
+        try {
+            const response = await api.patch(`/marking/update/${id}`, { marking: showEditMarking?.item })
+            if (response?.status === 200) {
+                alert.success('Medição editada com sucesso!');
+                setShowEditMarking({ active: false, item: {} })
+                getMarkings()
+            } else {
+                alert.error('Ocorreu um erro ao editar a medição.');
+            }
+        } catch (error) {
+            alert.error('Ocorreu um erro ao editar a medição.');
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const groupPeriod = [
+        { label: 'Jejum', value: 'Jejum' },
+        { label: 'Após Café', value: 'Após Café' },
+        { label: 'Após Almoço', value: 'Após Almoço' },
+        { label: 'Após Jantar', value: 'Após Jantar' },
+    ]
+
+    const grouDiet = [
+        { label: 'Sim', value: 1 },
+        { label: 'Não', value: 0 },
+    ]
 
     return (
         <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column', alignItems: { md: 'center', lg: 'center' } }}>
@@ -227,6 +270,17 @@ export default function HistoricMarkings() {
                     />
                 </Box>
 
+                <Box sx={{ display: 'flex', gap: 1, marginTop: 2, alignItems: 'center', justifyContent: 'center' }}>
+                    <SelectList data={groupRows} valueSelection={limit || ''} onSelect={(value) => setLimit(value)}
+                        title="Items por pagina:" filterOpition="value" sx={{ color: colorPalette.textColor, width: 100 }}
+                        secondary
+                        inputStyle={{ color: colorPalette.textColor, fontSize: '15px', fontFamily: 'MetropolisBold' }}
+                        clean={false}
+                    />
+                    <Button small secondary onClick={() => setPage(prevPage => Math.max(prevPage - 1, 1))} text="Anterior" style={{ height: 30 }} />
+                    <Button small secondary onClick={() => setPage(prevPage => prevPage + 1)} text="Próxima" style={{ height: 30 }} />
+                </Box>
+
                 <Box sx={{
                     display: 'flex', width: '100%', flexDirection: 'column', padding: '10px 0px', borderRadius: 2, marginTop: 2, gap: 3,
                 }}>
@@ -235,7 +289,7 @@ export default function HistoricMarkings() {
 
                             return (
                                 <Box key={index} sx={{
-                                    display: 'flex', justifyContent: 'space-around', zIndex: 9999, alignItems: 'center', padding: '15px',
+                                    display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '15px',
                                     flexDirection: 'column', position: 'relative', backgroundColor: colorPalette?.secondary, gap: 2,
                                     borderRadius: 2,
                                     boxShadow: theme ? `rgba(149, 157, 165, 0.27) 0px 6px 24px` : `rgba(35, 32, 51, 0.27) 0px 6px 24px`,
@@ -289,7 +343,8 @@ export default function HistoricMarkings() {
                                         <Text>{item?.food}</Text>
                                     </Box>
 
-                                    <Box sx={{ display: 'flex', position: 'absolute', right: 15, bottom: 15 }}>
+                                    <Box sx={{ display: 'flex', position: 'absolute', right: 15, bottom: 15, gap: 1, alignItems: 'center' }}>
+                                        <Button small secondary onClick={() => setShowEditMarking({ active: true, item: item })} text="Editar" style={{ height: 30 }} />
                                         <Tooltip title="Excluir">
                                             <div>
                                                 <Box sx={{
@@ -298,7 +353,7 @@ export default function HistoricMarkings() {
                                                     height: 35,
                                                     backgroundImage: `url('/icons/lixeira_icon.png')`,
                                                     transition: '.3s',
-                                                    zIndex: 9999,
+                                                    zIndex: 99,
                                                     "&:hover": {
                                                         opacity: 0.8,
                                                         cursor: 'pointer',
@@ -318,6 +373,69 @@ export default function HistoricMarkings() {
                 </Box>
 
             </Box>
+
+            <Backdrop open={showEditMarking?.active} sx={{ alignItems: { xs: 'start', xm: 'start', md: 'center', lg: 'center' }, zIndex: 99 }}>
+                <Box sx={{
+                    display: 'flex', width: '90%', justifyContent: 'center', flexDirection: 'column',
+                    padding: { xs: '40px 20px', xm: '40px 20px', md: '40px 40px', lg: '40px 40px' },
+                    borderRadius: 2, marginTop: 2, gap: 1.8,
+                    backgroundColor: colorPalette?.secondary,
+                    maxHeight: { xs: 530, xm: 530, md: 600, lg: 600, xl: 800 },
+                    overflowX: 'auto',
+                    width: { xs: '90%', xm: '500px', md: '500px', lg: '500px' }
+                }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', zIndex: 9999, alignItems: 'center', padding: '0px 0px 8px 0px' }}>
+                        <Text title bold>Editar Medição</Text>
+                        <Box sx={{
+                            ...styles.menuIcon,
+                            width: 15,
+                            height: 15,
+                            backgroundImage: `url(${icons.gray_close})`,
+                            transition: '.3s',
+                            zIndex: 9999,
+                            "&:hover": {
+                                opacity: 0.8,
+                                cursor: 'pointer'
+                            }
+                        }} onClick={() => {
+                            setShowEditMarking({ active: false, item: {} })
+                        }} />
+                    </Box>
+                    <Divider distance={0} />
+                    <TextInput placeholder='Data' name='date' onChange={handleChange} type="date" value={(showEditMarking?.item?.date)?.split('T')[0] || ''} label='Data:' sx={{ flex: 1, }} />
+                    <SelectList fullWidth data={groupPeriod} valueSelection={showEditMarking?.item?.period || ''} onSelect={(value) => setShowEditMarking({ ...showEditMarking, item: { ...showEditMarking?.item, period: value } })}
+                        title="Periodo:" filterOpition="value" sx={{ color: colorPalette.textColor, flex: 1 }}
+                        inputStyle={{ color: colorPalette.textColor, fontSize: '15px', fontFamily: 'MetropolisBold' }}
+                    />
+                    <TextInput placeholder='Valor da Medição' type="number" name='value' onChange={handleChange} value={showEditMarking?.item?.value || ''} label='Valor da Medição:' sx={{ flex: 1, }} />
+                    <RadioItem valueRadio={showEditMarking?.item?.diet ? 1 : 0}
+                        group={grouDiet}
+                        title="Dentro da Dieta?"
+                        horizontal={true}
+                        onSelect={(value) => setShowEditMarking({ ...showEditMarking, item: { ...showEditMarking?.item, diet: parseInt(value) } })} />
+                    <TextInput placeholder='O que comeu?' name='food' onChange={handleChange} value={showEditMarking?.item?.food || ''} label='O que comeu?' sx={{ flex: 1, }}
+                        multiline
+                        rows={3} maxRows={3} />
+
+                    <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+                        <Box sx={{
+                            display: 'flex', gap: 1, backgroundColor: colorPalette?.buttonColor, padding: '12px 12px', borderRadius: 2,
+                            transition: '.3s',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '80%',
+                            "&:hover": {
+                                opacity: 0.8,
+                                cursor: "pointer",
+                                transform: 'scale(1.1, 1.1)'
+                            },
+                        }} onClick={() => handleEditMarking(showEditMarking?.item?._id)}>
+                            <Text bold style={{ color: '#fff' }}>Editar Medição</Text>
+                        </Box>
+                    </Box>
+                </Box>
+            </Backdrop>
+
         </Box>
     )
 

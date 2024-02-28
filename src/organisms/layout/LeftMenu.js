@@ -71,11 +71,9 @@ export const LeftMenu = ({ }) => {
                   />
                </Box>
                <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-                  <Text bold style={{ color: '#fff' }}>Medição conciente</Text>
-                  {/* 
                   <Box sx={{
                      ...styles.icon,
-                     backgroundImage: `url('/icons/logo-clinica-light.png')`,
+                     backgroundImage: `url('/icons/logo-diabetes-light.png')`,
                      backgroundSize: 'contain',
                      width: !showMenuHelp ? '50px' : '107px',
                      height: !showMenuHelp ? '30px' : '51px',
@@ -83,12 +81,11 @@ export const LeftMenu = ({ }) => {
                      "&:hover": {
                         cursor: 'pointer', opacity: 0.8
                      }
-                  }} onClick={() => router.push('/')} /> */}
+                  }} onClick={() => router.push('/')} />
                   <Box onClick={() => setShowVersion(true)} sx={{ cursor: 'pointer' }}>
                      <Text style={{ bottom: 45, left: 10, position: 'absolute', color: 'gray' }}> v{latestVersion?.version}</Text>
                   </Box>
                </Box>
-
 
                <Divider distance={4} color={'rgb(255 255 255 / 0.1)'} />
                <Box sx={{ ...styles.boxMenu, ...(showMenuMobile && { overflowY: 'auto' }), ...(!showMenuHelp && { width: 40, marginLeft: 1, gap: 2 }) }}>
@@ -257,6 +254,32 @@ export const LeftMenu = ({ }) => {
                height: 20,
             }} />
             <Text small light>Sair</Text>
+         </Box >
+
+         <Box sx={{
+            position: 'absolute',
+            top: { xs: 15, xm: 15, md: 15, lg: 15 },
+            left: { xs: 15, xm: 15, md: 40, lg: 40 },
+            display: { xs: 'flex', sm: 'none', md: 'none', lg: 'none', xl: 'none' },
+            gap: .5,
+            flexDirection: 'column',
+            display: 'flex', alignItems: 'center',
+            "&:hover": {
+               cursor: 'pointer', opacity: 0.8
+            }
+         }}>
+            <Box sx={{
+               ...styles.icon,
+               backgroundImage: `url('/icons/logo-diabetes.png')`,
+            display: { xs: 'flex', sm: 'none', md: 'none', lg: 'none', xl: 'none' },
+               backgroundSize: 'contain',
+               width: !showMenuHelp ? '50px' : '107px',
+               height: !showMenuHelp ? '30px' : '51px',
+               marginTop: !showMenuHelp ? 3 : 0,
+               "&:hover": {
+                  cursor: 'pointer', opacity: 0.8
+               }
+            }} onClick={() => router.push('/')} />
          </Box >
          {/* <Backdrop open={showVersion || user?.at_versao > 0} sx={{ zIndex: 999 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400 }}>

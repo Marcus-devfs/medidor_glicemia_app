@@ -185,6 +185,17 @@ export default function Login() {
                                         <Text bold indicator style={{ color: !theme ? '#fff' : Colors.backgroundPrimary, transition: 'background-color 1s', textAlign: 'center' }}>Faça Login</Text>
                                     </Box>
                                     <Box sx={{
+                                backgroundSize: 'cover',
+                                display: 'flex',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center center',
+                                backgroundSize: 'cover',
+                                width: '160px',
+                                height: '100px',
+                                // backgroundColor: 'pink'
+                                backgroundImage: `url('/icons/logo-diabetes.png')`,
+                            }} />
+                                    <Box sx={{
                                         display: 'flex', flexDirection: 'column', gap: 2, width: { xs: `80%`, xm: `80%`, md: '62.5%', lg: '80%' }, justifyContent: 'center',
                                     }}>
                                         <TextInput
@@ -345,10 +356,10 @@ export default function Login() {
                                 backgroundRepeat: 'no-repeat',
                                 backgroundPosition: 'center center',
                                 backgroundSize: 'cover',
-                                width: '140px',
+                                width: '160px',
                                 height: '100px',
                                 // backgroundColor: 'pink'
-                                backgroundImage: `url('/icons/logo-clinica.png')`,
+                                backgroundImage: `url('/icons/logo-diabetes.png')`,
                             }} />
                         </Box>
                         <Box>

@@ -42,6 +42,7 @@ function Home() {
       food: ''
    })
    const [showMarking, setShowMarking] = useState(false)
+   const [yearSelected, setYearSelected] = useState(2024)
    const [medias, setMedias] = useState({
       jejum: 0,
       aposLanch: 0
@@ -49,6 +50,12 @@ function Home() {
    const router = useRouter();
    moment.locale("pt-br");
    const localizer = momentLocalizer(moment);
+
+   const years = [
+      { year: '2022', value: 2022 },
+      { year: '2023', value: 2023 },
+      { year: '2024', value: 2024 }
+   ]
 
 
    const handleChange = (value) => {
@@ -87,7 +94,7 @@ function Home() {
    const getMarkings = async () => {
       setLoading(true)
       try {
-         const response = await api.get(`/marking/list/media/${user?._id}`)
+         const response = await api.get(`/marking/list/media/${user?._id}?year=${yearSelected}`)
          const { jejum, aposLanch } = response?.data
          const somaJejum = jejum?.map(item => item?.value)?.reduce((acc, curr) => acc + curr, 0);
          const mediaJejum = jejum?.length > 0 ? somaJejum / jejum?.length : 0;
@@ -108,7 +115,7 @@ function Home() {
 
    useEffect(() => {
       getMarkings()
-   }, [])
+   }, [yearSelected])
 
    const handleMarking = async () => {
       if (checkRequiredFields()) {
@@ -186,7 +193,7 @@ function Home() {
                   padding: { xs: '40px 20px', xm: '40px 20px', md: '40px 40px', lg: '40px 40px' },
                   borderRadius: 2, marginTop: 2, gap: 1.8,
                   backgroundColor: colorPalette?.secondary,
-                  maxHeight: { xs: 530, xm: 530, md: 700, lg: 700 },
+                  maxHeight: { xs: 530, xm: 530, md: 600, lg: 600, xl: 800 },
                   overflowX: 'auto',
                   width: { xs: '90%', xm: '500px', md: '500px', lg: '500px' }
                }}>
@@ -243,7 +250,28 @@ function Home() {
             </Backdrop>
 
             <Box sx={{ display: 'flex', gap: 2, marginTop: 5, flexDirection: 'column' }}>
+
                <Text bold title style={{ color: colorPalette?.buttonColor, textAlign: 'center' }}>Médias: </Text>
+               <Box sx={{ display: 'flex', gap: 2, flexDirection: 'row', justifyContent: 'center' }}>
+                  {years?.map((item, index) => {
+                     const selected = yearSelected === item?.value;
+                     return (
+                        <Box key={index} sx={{
+                           display: 'flex', gap: 1, padding: '5px 8px', alignItems: 'center',
+                           justifyContent: 'center', border: `1px solid ${colorPalette?.buttonColor}`,
+                           backgroundColor: selected ? colorPalette?.buttonColor : 'transparent',
+                           transition: '.3s',
+                           "&:hover": {
+                              opacity: 0.8,
+                              cursor: "pointer",
+                              transform: 'scale(1.1, 1.1)'
+                           },
+                        }} onClick={() => setYearSelected(item?.value)}>
+                           <Text bold style={{ color: selected ? '#fff' : colorPalette?.buttonColor }}>{item?.year}</Text>
+                        </Box>
+                     )
+                  })}
+               </Box>
                <Box sx={{ width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', display: 'flex', marginTop: 2 }}>
                   <Text bold title> Jejum:</Text>
                   <Text bold indicator style={{ color: colorPalette?.buttonColor }}>{medias?.jejum}</Text>

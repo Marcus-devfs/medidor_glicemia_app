@@ -16,7 +16,8 @@ export const SelectList = (props) => {
         fullWidth = false,
         clean = true,
         minWidth = 120,
-        disabled = false
+        disabled = false,
+        secondary = false
     } = props;
 
     const { colorPalette } = useAppContext()
@@ -32,7 +33,7 @@ export const SelectList = (props) => {
                 <Select
                     disabled={disabled}
                     sx={{
-                         backgroundColor: colorPalette.inputColor, height: 45, color: colorPalette.textColor, ...sx, maxHeight: 45, transition: 'background-color 1s',
+                        backgroundColor: secondary ? colorPalette?.secondary : colorPalette.inputColor, height: 45, color: colorPalette.textColor, ...sx, maxHeight: 45, transition: 'background-color 1s',
                         fontSize: { xs: '13px', xm: '13px', md: '13px', lg: '14px', xl: '15px' }
                     }}
                     value={valueSelection}

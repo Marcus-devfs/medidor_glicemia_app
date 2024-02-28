@@ -9,8 +9,8 @@ export const LoadingIcon = (props) => {
     return (
         <>
             <Box sx={styles.backdrop}>
-                {/* <Box sx={styles.favicon} /> */}
-                <Text bold large sx={{color: '#fff'}}>Carregando...</Text>
+                <Box sx={styles.favicon} />
+                <Text bold sx={{color: '#fff'}}>Carregando...</Text>
             </Box>
         </>
     )
@@ -33,7 +33,7 @@ const styles = {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
-        backgroundImage: `url('/icons/logo-clinica-light.png')`,
+        backgroundImage: `url('/icons/logo-diabetes-light.png')`,
         backgroundSize: 'contain',
         width: 180,
         height: 120,

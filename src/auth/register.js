@@ -187,11 +187,23 @@ export const Register = ({ showRegister, setShowRegister }) => {
                         gap: 3,
                     }}>
 
+                        <Box sx={{
+                            backgroundSize: 'cover',
+                            display: 'flex',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center center',
+                            backgroundSize: 'cover',
+                            width: '160px',
+                            height: '100px',
+                            // backgroundColor: 'pink'
+                            backgroundImage: `url('/icons/logo-diabetes.png')`,
+                        }} />
+
                         <form style={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center', width: '100%', }}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center', width: '100%' }}>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: .8, alignItems: 'center', width: '100%', justifyContent: 'center' }}>
-                                    <Text bold indicator style={{ color: !theme ? '#fff' : Colors.backgroundPrimary, transition: 'background-color 1s', textAlign: 'center' }}>Bem vindo! </Text>
-                                    <Text bold indicator style={{ color: colorPalette.buttonColor, transition: 'background-color 1s', textAlign: 'center' }}>Faça Seu Cadastro para começar </Text>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: .8, alignItems: 'center', width: '100%', justifyContent: 'center', padding: '10px 15px' }}>
+                                    <Text bold title style={{ color: !theme ? '#fff' : Colors.backgroundPrimary, transition: 'background-color 1s', textAlign: 'center' }}>Bem vindo! </Text>
+                                    <Text bold title style={{ color: colorPalette.buttonColor, transition: 'background-color 1s', textAlign: 'center' }}>Faça Seu Cadastro para começar </Text>
                                 </Box>
                                 <Box sx={{
                                     display: 'flex', flexDirection: 'column', gap: 2, width: { xs: `80%`, xm: `80%`, md: '62.5%', lg: '80%' }, justifyContent: 'center',
