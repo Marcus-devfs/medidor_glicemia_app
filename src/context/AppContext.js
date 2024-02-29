@@ -65,6 +65,7 @@ export const AppProvider = ({ children }) => {
             const token = localStorage.getItem('token')
             try {
                 if (token != null) {
+                    upNotification()
                     api.defaults.headers.Authorization = `Bearer ${token}`
                     const response = await api.post('/user/loginToken')
                     const userData = response?.data;
@@ -89,6 +90,7 @@ export const AppProvider = ({ children }) => {
             const response = await api.post('/user/login', { email, password })
             const userData = response?.data
             if (userData.token) {
+                upNotification()
                 localStorage.setItem('token', userData?.token);
                 api.defaults.headers.Authorization = `Bearer ${userData?.token}`
                 setUser(userData);
@@ -162,30 +164,27 @@ export const AppProvider = ({ children }) => {
         return () => {
             router.events.off('routeChangeStart', handleRouteChange);
         };
-    }, []);
+    }, [router?.asPath]);
 
-
+    const upNotification = () => {
+        if ('Notification' in window) {
+            return (
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        new Notification('Lembrete de Saúde', {
+                            body: 'Lembre de tomar sua insulina! Cuide da sua saúde!',
+                            icon: '/icons/logo_glicemia.png' // Substitua pelo caminho real do seu ícone
+                        });
+                    }
+                })
+            )
+        }
+    }
 
     useEffect(() => {
         colorsThem();
     }, [theme])
 
-
-    useEffect(() => {
-        const handleMenuItems = async () => {
-            try {
-                const response = await api.get(`/menuItems`)
-                const { data } = response
-                if (response.status === 200) {
-                    setMenuItemsList(data)
-                }
-            } catch (error) {
-                console.log(error)
-                return error
-            }
-        }
-        handleMenuItems()
-    }, [])
 
     return (
         <AppContext.Provider
