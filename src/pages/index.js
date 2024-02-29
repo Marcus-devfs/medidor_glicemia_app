@@ -46,7 +46,7 @@ function Home() {
       food: ''
    })
    const [showMarking, setShowMarking] = useState(false)
-   const [yearSelected, setYearSelected] = useState(2024)
+   const [yearSelected, setYearSelected] = useState('todos')
    const [medias, setMedias] = useState({
       jejum: 0,
       aposLanch: 0
@@ -58,7 +58,8 @@ function Home() {
    const years = [
       { year: '2022', value: 2022 },
       { year: '2023', value: 2023 },
-      { year: '2024', value: 2024 }
+      { year: '2024', value: 2024 },
+      { year: 'Todos', value: `todos` },
    ]
 
 
@@ -273,7 +274,8 @@ function Home() {
                               cursor: "pointer",
                               transform: 'scale(1.1, 1.1)'
                            },
-                        }} onClick={() => setYearSelected(item?.value)}>
+                        }} onClick={() => {
+                           setYearSelected(item?.value)}}>
                            <Text bold style={{ color: selected ? '#fff' : colorPalette?.buttonColor }}>{item?.year}</Text>
                         </Box>
                      )

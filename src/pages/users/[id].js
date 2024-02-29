@@ -193,7 +193,7 @@ export default function EditUser() {
                 width: { xs: '%100', xm: '100%', md: '100%', lg: 600 }
             }}>
                 <Box sx={{
-                    display: 'flex', backgroundColor: colorPalette?.third, height: 300,
+                    display: 'flex', height: 300,
                     alignItems: 'center', justifyContent: 'center', width: { xs: '%100', xm: '100%', md: '100%', lg: 600 }
                 }}>
                     <Box sx={{
@@ -254,12 +254,14 @@ export default function EditUser() {
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                     <Box sx={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 15px',
-                        borderBottom: '1px solid lightgray', width: '100%',
+                        borderBottom: '1px solid lightgray',
+                        borderTop: '1px solid lightgray',
+                        width: '100%',
                         transition: '.3s',
                         "&:hover": {
                             opacity: 0.8,
                             cursor: "pointer",
-                            transform: 'scale(1.1, 1.1)'
+                            transform: { xs: 'scale(1.0, 1.0)', sm: 'scale(1.0, 1.0)', md: 'scale(1.1, 1.1)', lg: 'scale(1.1, 1.1)' }
                         },
                     }} onClick={() => {
                         setShowPage({ ...showPage, myData: true })
@@ -284,7 +286,8 @@ export default function EditUser() {
                         "&:hover": {
                             opacity: 0.8,
                             cursor: "pointer",
-                            transform: 'scale(1.1, 1.1)'
+                            transform: { xs: 'scale(1.0, 1.0)', sm: 'scale(1.0, 1.0)', md: 'scale(1.1, 1.1)', lg: 'scale(1.1, 1.1)' }
+
                         },
                     }} onClick={() => {
                         setShowPage({ ...showPage, changePass: true })
@@ -304,7 +307,8 @@ export default function EditUser() {
                         "&:hover": {
                             opacity: 0.8,
                             cursor: "pointer",
-                            transform: 'scale(1.1, 1.1)'
+                            transform: { xs: 'scale(1.0, 1.0)', sm: 'scale(1.0, 1.0)', md: 'scale(1.1, 1.1)', lg: 'scale(1.1, 1.1)' }
+
                         },
                     }} onClick={() => setTheme(!theme)}>
                         <Text>Tema</Text>
@@ -322,7 +326,8 @@ export default function EditUser() {
                         "&:hover": {
                             opacity: 0.8,
                             cursor: "pointer",
-                            transform: 'scale(1.1, 1.1)'
+                            transform: { xs: 'scale(1.0, 1.0)', sm: 'scale(1.0, 1.0)', md: 'scale(1.1, 1.1)', lg: 'scale(1.1, 1.1)' }
+
                         },
                     }} onClick={logout}>
                         <Text>Sair</Text>

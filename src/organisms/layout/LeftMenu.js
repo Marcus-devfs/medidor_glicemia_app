@@ -210,7 +210,7 @@ export const LeftMenu = ({ }) => {
                            <Box sx={{
                               ...styles.icon,
                               backgroundImage: `url(${item?.icon})`,
-                              filter: theme ? 'brightness(0) invert(0)' : 'brightness(0) invert(1)',
+                              filter: 'brightness(0) invert(1)',
                               backgroundSize: 'contain',
                               opacity: currentPage ? 1 : .5,
                               width: 22,

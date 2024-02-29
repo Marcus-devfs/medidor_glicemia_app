@@ -126,10 +126,11 @@ export const CustomDropzone = (props) => {
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, justifyContent: 'center', alignItems: 'center' }}>
 
                             <ContentContainer>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', zIndex: 999999999 }}>
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', zIndex: 999999999, gap: 2 }}>
                                     <Text bold>Preview</Text>
                                     <Box sx={{
                                         ...styles.menuIcon,
+                                        width: 15,
                                         backgroundImage: `url(${icons.gray_close})`,
                                         transition: '.3s',
                                         zIndex: 999999999,
@@ -151,7 +152,7 @@ export const CustomDropzone = (props) => {
                                                         backgroundRepeat: 'no-repeat',
                                                         backgroundPosition: 'center center',
                                                         borderRadius: campo === 'foto_perfil' ? '50%' : '',
-                                                        width: { xs: '100%', sm: 150, md: 150, lg: 250, xl: 250 },
+                                                        width: { xs: 150, sm: 150, md: 150, lg: 250, xl: 250 },
                                                         aspectRatio: '1/1',
                                                     }}>
                                                 </Box>
