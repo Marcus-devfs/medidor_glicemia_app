@@ -19,21 +19,12 @@ export const CustomDropzone = (props) => {
 
     const {
         callback = () => { },
-        usuario_id = null,
+        userId = null,
         campo = null,
-        tipo = null,
         bgImage = null,
         bgImageStyle = {},
         propsDropzone = {},
-        images = false,
-        tela = null,
         typeOpition = false,
-        servicoId,
-        screen,
-        contract = false,
-        taskId = null,
-        matricula_id,
-        material_id
     } = props;
 
     const onDropFiles = async (files) => {
@@ -69,8 +60,7 @@ export const CustomDropzone = (props) => {
             formData.append('file', uploadedFile?.file, encodeURIComponent(uploadedFile?.name));
             try {
                 const response = await uploadFile({
-                    formData, usuario_id, campo, tipo: typeOpition ? typeFile : tipo, images, tela,
-                    contract, servicoId, screen, taskId, matricula_id, material_id
+                    formData, userId
                 });
                 const { data = {}, status } = response;
                 const { fileId } = data
@@ -232,7 +222,7 @@ const uploadFiles = async (uploadedFile) => {
 
     formData.append('file', uploadedFile.file, encodeURIComponent(uploadedFile.name))
 
-    const response = await uploadFile({ formData, usuario_id: null, campo: null, tipo: null });
+    const response = await uploadFile({ formData, userId: null, campo: null, tipo: null });
     const { data = {}, status } = response;
     const { file = {} } = data;
 

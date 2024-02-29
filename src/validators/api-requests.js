@@ -198,50 +198,16 @@ export const editGrid = async ({ id, gridData }) => {
 
 export const uploadFile = async (data) => {
 
-   const { formData, usuario_id = null, campo = null, tipo = null, images = false, tela = null, contract, servicoId, screen, taskId, matricula_id = null, material_id = null } = data;
+   const { formData, userId = null, campo = null, tipo = null, images = false, tela = null, contract, servicoId, screen, taskId, matricula_id = null, material_id = null } = data;
 
-   let query = `?usuario_id=${usuario_id}`;
-
-   if (campo) query += `&campo=${campo}`;
-   if (tela) query += `&tela=${tela}`;
-   if (tipo) query += `&tipo=${tipo}`;
-   if (servicoId) query += `&servicoId=${servicoId}`;
-   if (screen) query += `&screen=${screen}`;
-   if (taskId) query += `&taskId=${taskId}`;
-   if (matricula_id) query += `&matricula_id=${matricula_id}`;
-   if (material_id) query += `&material_id=${material_id}`;
+   let query = `?userId=${userId}`;
 
    try {
-      if (images) {
-         const response = await api.post(`/file/image/upload${query}`, formData, { headers: { 'Authorization': "bearer " + 'token' } })
-         return response
-      }
-
-      if (contract) {
-         const response = await api.post(`/contract/service/upload${query}`, formData, { headers: { 'Authorization': "bearer " + 'token' } })
-         return response
-      }
-
-      if (taskId) {
-         const response = await api.post(`/task/file/upload${query}`, formData, { headers: { 'Authorization': "bearer " + 'token' } })
-         return response
-      }
-
-      if (matricula_id) {
-         const response = await api.post(`/student/enrrolments/contract/upload${query}`, formData, { headers: { 'Authorization': "bearer " + 'token' } })
-         return response
-      }
-
-      if (material_id) {
-         const response = await api.post(`/catalog/material/image/upload${query}`, formData, { headers: { 'Authorization': "bearer " + 'token' } })
-         return response
-      }
 
       const response = await api.post(`/file/upload${query}`, formData, { headers: { 'Authorization': "bearer " + 'token' } })
       return response
    } catch (error) {
       console.log(error)
-
       return (error)
    }
 }

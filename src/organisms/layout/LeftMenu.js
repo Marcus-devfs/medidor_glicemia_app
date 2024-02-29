@@ -27,7 +27,8 @@ export const LeftMenu = ({ }) => {
    const [showMenuHelp, setShowMenuHelp] = useState(false)
    const [showEditUser, setShowEditUser] = useState(false)
    const [groupStates, setGroupStates] = useState(menuItems.map(() => false));
-
+   let [photo] = user?.photoPerfil
+   let photoUrl = photo?.url;
 
    const handleGroupMouseEnter = (index) => {
       setGroupStates((prevGroupStates) => {
@@ -160,7 +161,7 @@ export const LeftMenu = ({ }) => {
                                  )
                               }}>
                                  <Box sx={{
-                                    flex: 1, backgroundColor: showMenuHelp ? colorPalette.third : '#fff', display: 'flex', marginLeft: 2, flexDirection: 'column',
+                                    flex: 1, backgroundColor: showMenuHelp ? colorPalette.third : colorPalette?.secondary, display: 'flex', marginLeft: 2, flexDirection: 'column',
                                  }}>
                                     {groupStates[index] && (
                                        <>
@@ -209,7 +210,7 @@ export const LeftMenu = ({ }) => {
                            <Box sx={{
                               ...styles.icon,
                               backgroundImage: `url(${item?.icon})`,
-                              filter: 'brightness(0) invert(1)',
+                              filter: theme ? 'brightness(0) invert(0)' : 'brightness(0) invert(1)',
                               backgroundSize: 'contain',
                               opacity: currentPage ? 1 : .5,
                               width: 22,
@@ -249,236 +250,58 @@ export const LeftMenu = ({ }) => {
             <Box sx={{
                ...styles.icon,
                backgroundImage: `url('/icons/exit.png')`,
+               filter: theme ? 'brightness(0) invert(0)' : 'brightness(0) invert(1)',
                backgroundSize: 'contain',
-               width: 20,
-               height: 20,
+               width: { xs: 20, xm: 20, md: 25, lg: 28 },
+               height: { xs: 20, xm: 20, md: 25, lg: 28 },
             }} />
             <Text small light>Sair</Text>
          </Box >
 
          <Box sx={{
             position: 'absolute',
-            top: { xs: 15, xm: 15, md: 15, lg: 15 },
-            left: { xs: 15, xm: 15, md: 40, lg: 40 },
-            display: { xs: 'flex', sm: 'none', md: 'none', lg: 'none', xl: 'none' },
-            gap: .5,
-            flexDirection: 'column',
+            top: { xs: 10, xm: 15, md: 15, lg: 10 },
+            right: { lg: 110 },
             display: 'flex', alignItems: 'center',
+            display: { xs: 'none', sm: 'none', md: 'none', lg: 'flex', xl: 'flex' },
+            flexDirection: 'column',
             "&:hover": {
                cursor: 'pointer', opacity: 0.8
             }
-         }}>
-            <Box sx={{
-               ...styles.icon,
-               backgroundImage: `url('/icons/logo-diabetes.png')`,
-            display: { xs: 'flex', sm: 'none', md: 'none', lg: 'none', xl: 'none' },
-               backgroundSize: 'contain',
-               width: !showMenuHelp ? '50px' : '107px',
-               height: !showMenuHelp ? '30px' : '51px',
-               marginTop: !showMenuHelp ? 3 : 0,
-               "&:hover": {
-                  cursor: 'pointer', opacity: 0.8
-               }
-            }} onClick={() => router.push('/')} />
+         }} onClick={() => router.push('/')}>
+            <Avatar src={photoUrl || `url('/icons/logo-diabetes.png')`} sx={{
+               height: 'auto',
+               borderRadius: '50%',
+               display: { xs: 'none', sm: 'none', md: 'none', lg: 'flex', xl: 'flex' },
+               width: { xs: 35, sm: 180, md: 180, lg: 40 },
+               aspectRatio: '1/1',
+            }} variant="square" />
+            <Text bold small>{userName}</Text>
          </Box >
-         {/* <Backdrop open={showVersion || user?.at_versao > 0} sx={{ zIndex: 999 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 400 }}>
-               <ContentContainer>
-                  <Box sx={{ flex: 1, display: 'flex', justifyContent: 'space-between' }}>
-                     <Text large bold>Atualização de Versão</Text>
-                     <Box sx={{
-                        ...styles.menuIcon,
-                        backgroundImage: `url(${icons.gray_close})`,
-                        transition: '.3s',
-                        zIndex: 999999999,
-                        "&:hover": {
-                           opacity: 0.8,
-                           cursor: 'pointer'
-                        }
-                     }} onClick={() => {
-                        setShowVersion(false)
-                        if (user?.at_versao > 0) {
-                           handleAttMsgVersion()
-                           setUser({...user, at_versao: 0})
-                        }
-                     }} />
-                  </Box>
-                  <Divider distance={0} />
-                  <Box sx={{ display: 'flex', gap: 3, flexDirection: 'column', marginTop: 2 }}>
-                     <Text bold>Versão em produção - {latestVersion?.version} ({latestVersion?.build})</Text>
-                     <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column' }}>
-                        <Text bold>Alterações realizadas</Text>
-                        <Text>{latestVersion?.msg}</Text>
-                     </Box>
-                     <Box sx={{ display: 'flex', gap: 1, flexDirection: 'column' }}>
-                        <Text bold>Algumas mudanças:</Text>
 
-                        {latestVersion?.listChanges?.map((item, index) => {
-                           return (
-                              <Box key={index} sx={{
-                                 display: 'flex', gap: 1, color: 'rgb(75 85 99)', "&:hover": {
-                                    opacity: 0.8,
-                                    transform: 'scale(1.1)',
-                                    transition: '.5s',
-                                    color: colorPalette.buttonColor,
-                                    fontWeight: 'bold'
-                                 },
-                                 marginTop: 1
-                              }}>
-                                 <Box sx={{
-                                    ...styles.menuIcon,
-                                    aspectRatio: '1/1',
-                                    backgroundImage: `url('/icons/topic_icon.png')`,
-                                    filter: theme ? 'brightness(0) invert(0)' : 'brightness(0) invert(1)',
-                                    transition: '.3s',
-                                 }} />
-                                 <Text small bold style={{ color: 'inherit', fontWeight: 'inherit' }}>{item?.change}</Text>
-                              </Box>
-                           )
-                        })}
-                     </Box>
-                  </Box>
-               </ContentContainer>
-            </Box>
-
-         </Backdrop> */}
+         <Box sx={{
+            position: 'absolute',
+            top: { xs: 10, xm: 15, md: 15, lg: 15 },
+            left: { xs: 15, xm: 15, md: 40, lg: 0 },
+            display: 'flex', alignItems: 'center',
+            flexDirection: 'column',
+            "&:hover": {
+               cursor: 'pointer', opacity: 0.8
+            }
+         }} onClick={() => router.push('/')}>
+            <Avatar src={photoUrl || `url('/icons/logo-diabetes.png')`} sx={{
+               height: 'auto',
+               borderRadius: '50%',
+               display: { xs: 'flex', sm: 'none', md: 'none', lg: 'none', xl: 'none' },
+               width: { xs: 35, sm: 180, md: 180, lg: 65 },
+               aspectRatio: '1/1',
+            }} variant="square" />
+            <Text bold small>{userName}</Text>
+         </Box >
       </>
    )
 }
 
-const MenuItem = (props) => {
-
-   const { colorPalette, theme } = useAppContext()
-   const [showSubItems, setShowSubItems] = useState(false);
-   const {
-      to,
-      text,
-      icon,
-      currentPage,
-      onClick,
-      slug,
-      subitem,
-      pathname,
-      setShowMenuHelp,
-      showMenuHelp
-   } = props
-
-   return (
-      <>
-         <Link
-            href={to || '/#'}
-            onClick={() => {
-               setShowMenuHelp(false)
-               onClick
-            }}
-            style={{ display: 'flex', width: 'auto', padding: `8px 8px 8px 16px`, minWidth: 110 }}
-            onMouseEnter={() => setShowSubItems(true)}
-            onMouseLeave={() => setShowSubItems(false)}
-         >
-            <Box sx={{
-               display: 'flex',
-               width: '100%',
-               borderRadius: 2,
-               color: 'inherit',
-               transition: '.2s',
-               ...(currentPage && to != null ?
-                  {
-                     // border: `1px solid ${Colors.orange}`,
-                     // backgroundColor: colorPalette.buttonColor,
-                     color: colorPalette.buttonColor,
-                  }
-                  :
-                  {
-                     "&:hover": {
-                        // backgroundColor: colorPalette.buttonColor + '22',
-
-
-                     }
-                  }),
-            }}>
-               <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', color: 'inherit', justifyContent: 'space-between' }}>
-                  {/* <Box sx={{ ...styles.icon, backgroundImage: `url(/icons/${icon})`, width: 18, height: 18, filter: 'brightness(0) invert(1)', }} /> */}
-                  <Text
-                     small
-                     sx={{
-                        color: showMenuHelp ? '#fff' : colorPalette?.textColor,
-                        transition: 'background-color 1s',
-                        "&:hover": {
-                           color: colorPalette.buttonColor,
-                        },
-                        ...(currentPage && to != null &&
-                        {
-                           color: colorPalette.buttonColor,
-                        }
-                        ),
-                     }}>
-                     {text}
-                  </Text>
-                  {subitem?.length > 0 &&
-                     <Box sx={{
-                        ...styles.menuIcon,
-                        backgroundImage: `url(${icons.gray_arrow_down})`,
-                        transform: 'rotate(-90deg)',
-                        transition: '.3s',
-                        right: 12,
-                        width: 15,
-                        aspectRatio: '1/1',
-                        height: 15,
-                        // position: 'absolute',
-                        "&:hover": {
-                           opacity: 0.8,
-                           cursor: 'pointer'
-                        }
-                     }} />}
-               </Box>
-               <Box sx={{ position: 'absolute', marginLeft: { md: 11, lg: 10, xl: 11.5 }, boxShadow: `rgba(149, 157, 165, 0.17) 0px 6px 24px`, }}>
-                  {showSubItems &&
-                     [...new Set(subitem.map(item => item.to))].map((to, index) => {
-                        const item = subitem.find(item => item.to === to);
-                        const currentPage = item.to === pathname;
-                        const key = `${index}_${item.id_subitem}`;
-
-                        return (
-                           <Link key={key}
-                              href={item.to || '/#'}
-                              style={{ display: 'flex', width: '100%', backgroundColor: colorPalette.secondary, boxShadow: `rgba(149, 157, 165, 0.17) 0px 6px 24px`, }}
-                           >
-                              <Box sx={{
-                                 display: 'flex',
-                                 padding: `8px 18px`,
-                                 width: '100%',
-                                 borderRadius: 2,
-                                 color: 'inherit',
-                                 transition: '.2s',
-                                 ...(currentPage && item.to != null ?
-                                    { color: colorPalette.buttonColor } : {}),
-                              }}>
-                                 <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', color: 'inherit' }}>
-                                    <Text
-                                       small
-                                       sx={{
-                                          color: colorPalette?.textColor,
-                                          transition: 'background-color 1s',
-                                          "&:hover": {
-                                             color: colorPalette.buttonColor,
-                                          },
-                                          ...(currentPage && item.to != null && { color: colorPalette.buttonColor }
-                                          ),
-                                       }}>
-                                       {item.text}
-                                    </Text>
-                                 </Box>
-                              </Box>
-                           </Link>
-                        );
-                     })}
-               </Box>
-
-            </Box>
-         </Link>
-      </>
-   )
-}
 
 const styles = {
    leftMenuMainContainer: {
