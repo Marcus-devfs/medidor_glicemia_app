@@ -56,9 +56,8 @@ function Home() {
    const localizer = momentLocalizer(moment);
 
    const years = [
-      { year: '2022', value: 2022 },
-      { year: '2023', value: 2023 },
-      { year: '2024', value: 2024 },
+      { year: '2025', value: 2025 },
+      { year: '2026', value: 2026 },
       { year: 'Todos', value: `todos` },
    ]
 
